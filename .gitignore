@@ -1,0 +1,11 @@
+.idea/
+.vscode/
+node_modules/
+build/
+uploads/
+temp/
+dist/
+logs/
+
+.env
+yarn.lock
