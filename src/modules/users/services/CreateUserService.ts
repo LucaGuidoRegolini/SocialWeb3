@@ -34,9 +34,7 @@ class CreateUserService {
     avatar,
     coverage,
   }: IRequest): Promise<User> {
-    const userExists = await this.usersRepository.findBy({
-      filters: { email },
-    });
+    const userExists = await this.usersRepository.findBy({ email });
 
     if (userExists) {
       if (avatar) await this.storageProvider.deleteFileInTmpFolder(avatar);

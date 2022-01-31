@@ -1,8 +1,9 @@
 import { IFilterReq } from './IFilterReq';
 
-interface IPaginatedRequest<T> extends IFilterReq<T> {
+interface IPaginatedRequest<T> {
   page?: number;
   limit?: number;
+  filters?: IFilterReq<T>;
 }
 
 export { IPaginatedRequest };

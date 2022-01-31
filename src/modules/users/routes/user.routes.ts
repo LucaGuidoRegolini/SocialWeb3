@@ -16,8 +16,6 @@ const upload = multer({
 
 const userRouter = Router();
 
-userRouter.get('/', userController.index);
-
 userRouter.post(
   '/',
   upload.fields([

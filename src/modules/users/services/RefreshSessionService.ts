@@ -1,6 +1,5 @@
 import { instanceToInstance } from 'class-transformer';
 import { injectable, inject } from 'tsyringe';
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { randomBytes } from 'crypto';
 
@@ -13,14 +12,13 @@ import { IRedisProvider } from '@shared/container/providers/RedisProvider/model/
 import { ISessionDto } from '../dtos/ISessionDTO';
 
 interface IRequest {
-  email: string;
-  password: string;
+  refreshToken: string;
 }
 
 const { jwt, refreshToken: refreshTokenOptions } = authConfig;
 
 @injectable()
-class CreateSessionService {
+class RefreshSessionService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUserRepository,
@@ -29,28 +27,28 @@ class CreateSessionService {
     private redisProvider: IRedisProvider,
   ) {}
 
-  public async execute({
-    email,
-    password,
-  }: IRequest): Promise<ISessionDto<User>> {
-    const user = await this.usersRepository.findBy({ email });
+  public async execute({ refreshToken }: IRequest): Promise<ISessionDto<User>> {
+    const uuid = await this.redisProvider.get(refreshToken);
 
-    if (!user) throw new AppError('Email e senha não combinam', 401);
+    if (!uuid) throw new AppError('Refresh token inválido', 401);
 
-    if (!(await compare(password, user.password)))
-      throw new AppError('Email e senha não combinam', 401);
+    const user = await this.usersRepository.findBy({ uuid });
 
-    const refreshToken = await this.redisProvider.set({
+    if (!user) throw new AppError('Refresh token inválido', 401);
+
+    const newRefreshToken = await this.redisProvider.set({
       key: randomBytes(refreshTokenOptions.bytesSize).toString('hex'),
       value: user.uuid,
       time: refreshTokenOptions.expiresIn,
       option: 'EX',
     });
 
+    await this.redisProvider.del(refreshToken);
+
     const accessToken = sign(
       {
         uuid: user.uuid,
-        refresh: refreshToken,
+        refresh: newRefreshToken,
         expiresIn: jwt.expiresIn,
       },
       jwt.secret,
@@ -59,9 +57,9 @@ class CreateSessionService {
     return {
       result: instanceToInstance(user),
       access_token: accessToken,
-      refresh_token: refreshToken,
+      refresh_token: newRefreshToken,
     };
   }
 }
 
-export { CreateSessionService };
+export { RefreshSessionService };

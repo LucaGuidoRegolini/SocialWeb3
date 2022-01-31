@@ -29,7 +29,6 @@ const logger = winston.createLogger({
 
 export class LoggerStream {
   write(message: string) {
-    console.log(message);
     logger.info(message.substring(0, message.lastIndexOf('\n')));
   }
 }

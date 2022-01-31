@@ -11,9 +11,11 @@ class FakeUserRepository implements IUserRepository {
   private users: User[] = [];
 
   public async findBy(filters: IFilterReq<User>): Promise<User | undefined> {
-    const newFilter = JSON.parse(JSON.stringify(filters));
-
-    const user = this.users.find(newFilter);
+    const user = this.users.find(obj => {
+      return (Object.keys(User) as Array<keyof typeof filters>).every(key => {
+        return obj[key] === filters[key];
+      });
+    });
 
     return user;
   }

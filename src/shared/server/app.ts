@@ -17,13 +17,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/files', express.static(uploadConfig.uploadsFolder));
-app.use(routes);
-
 app.use(
   morgan('combined', {
     stream: new LoggerStream(),
   }),
 );
+
+app.use(routes);
 
 app.get('/', (_, response) => response.send('SocialWeb - 0.0.1'));
 

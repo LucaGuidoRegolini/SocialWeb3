@@ -4,7 +4,7 @@ export const authConfig = {
     expiresIn: '1d',
   },
   refreshToken: {
-    bytesSize: 30,
+    bytesSize: 35,
     expiresIn: '864000',
   },
 };

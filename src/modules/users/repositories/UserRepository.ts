@@ -15,9 +15,7 @@ class UserRepository implements IUserRepository {
     this.ormRepository = getRepository(User);
   }
 
-  public async findBy({
-    filters,
-  }: IFilterReq<User>): Promise<User | undefined> {
+  public async findBy(filters: IFilterReq<User>): Promise<User | undefined> {
     const newFilter = JSON.parse(JSON.stringify(filters));
 
     const user = await this.ormRepository.findOne(newFilter);

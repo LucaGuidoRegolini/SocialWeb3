@@ -2,8 +2,10 @@
 .vscode/
 node_modules/
 build/
-uploads/
+tmp/*
+
 temp/
+coverage/
 dist/
 logs/
 

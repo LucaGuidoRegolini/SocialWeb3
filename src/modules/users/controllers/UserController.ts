@@ -6,32 +6,6 @@ import { ListUserService } from '../services/ListUserService';
 import { ShowUserService } from '../services/ShowUserService';
 
 export class UserController {
-  public async index(request: Request, response: Response): Promise<Response> {
-    const {
-      page = 1,
-      limit = 10,
-      name,
-      email,
-      phone,
-      is_active,
-    } = request.query;
-
-    const listUsers = container.resolve(ListUserService);
-
-    const users = await listUsers.execute({
-      page: Number(page),
-      limit: Number(limit),
-      filters: {
-        name: name ? String(name) : undefined,
-        email: email ? String(email) : undefined,
-        phone: phone ? String(phone) : undefined,
-        is_active: is_active === undefined ? undefined : Boolean(is_active),
-      },
-    });
-
-    return response.json(users);
-  }
-
   public async show(request: Request, response: Response): Promise<Response> {
     const { uuid } = request.params;
 
