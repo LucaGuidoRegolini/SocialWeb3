@@ -4,7 +4,7 @@ import { ISubscriptionRepository } from './interfaces/ISubscriptionRepository';
 
 import { IFilterReq } from '../../../shared/interfaces/IFilterReq';
 import { IPaginatedRequest } from '../../../shared/interfaces/IPaginatedRequest';
-import IPaginatedResponse from '../../../shared/interfaces/IPaginatedResponse';
+import { IPaginatedResponse } from '../../../shared/interfaces/IPaginatedResponse';
 import { Subscription } from '../entities/Subscription';
 import { ICreateSubDto } from '../dtos/ICreateSubDTO';
 
@@ -15,9 +15,9 @@ class SubscriptionRepository implements ISubscriptionRepository {
     this.ormRepository = getRepository(Subscription);
   }
 
-  public async findBy({
-    filters,
-  }: IFilterReq<Subscription>): Promise<Subscription | undefined> {
+  public async findBy(
+    filters: IFilterReq<Subscription>,
+  ): Promise<Subscription | undefined> {
     const newFilter = JSON.parse(JSON.stringify(filters));
 
     const sub = await this.ormRepository.findOne(newFilter);
@@ -40,7 +40,9 @@ class SubscriptionRepository implements ISubscriptionRepository {
       take: limit,
     });
 
-    const total = await this.ormRepository.count();
+    const total = await this.ormRepository.count({
+      where: newFilter,
+    });
 
     return {
       results: sub,

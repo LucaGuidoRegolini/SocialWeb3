@@ -4,7 +4,7 @@ import multer from 'multer';
 import { uploadConfig } from '@config/upload';
 
 import { UserController } from '../controllers/UserController';
-import { create } from './validations/user.validation';
+import { create, update } from './validations/user.validation';
 import { ensureAuthenticated } from '@shared/server/middlewares/ensureAuthenticated';
 
 const userController = new UserController();
@@ -29,5 +29,15 @@ userRouter.post(
 userRouter.use(ensureAuthenticated);
 
 userRouter.get('/me', userController.show);
+
+userRouter.put(
+  '/',
+  upload.fields([
+    { name: 'avatar', maxCount: 1 },
+    { name: 'coverage', maxCount: 1 },
+  ]),
+  update,
+  userController.update,
+);
 
 export { userRouter };

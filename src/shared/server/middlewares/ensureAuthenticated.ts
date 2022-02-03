@@ -27,12 +27,17 @@ export async function ensureAuthenticated(
     throw new AppError('Token JWT inexistente!', 404);
   }
 
-  const [, token] = authHeader.split(' ');
+  const [method, token] = authHeader.split(' ');
+
+  if (method !== 'Bearer') throw new AppError('Token JWT inválido!', 401);
 
   try {
     const decoded = verify(token, authConfig.jwt.secret as string);
 
-    const { uuid, refresh } = decoded as ITokenPayload;
+    const { uuid, refresh, exp } = decoded as ITokenPayload;
+
+    const tokenExpired = exp < Date.now() / 1000;
+    if (tokenExpired) throw new AppError('Token JWT expirado!', 401);
 
     const redisUuid = await redisProvider.get(refresh);
 

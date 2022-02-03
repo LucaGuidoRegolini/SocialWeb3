@@ -1,4 +1,3 @@
-import IPaginatedResponse from '@shared/interfaces/IPaginatedResponse';
 import { instanceToInstance } from 'class-transformer';
 import { injectable, inject } from 'tsyringe';
 

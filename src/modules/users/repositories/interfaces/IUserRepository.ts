@@ -1,6 +1,6 @@
 import { IFilterReq } from '../../../../shared/interfaces/IFilterReq';
 import { IPaginatedRequest } from '../../../../shared/interfaces/IPaginatedRequest';
-import IPaginatedResponse from '../../../../shared/interfaces/IPaginatedResponse';
+import { IPaginatedResponse } from '../../../../shared/interfaces/IPaginatedResponse';
 import { ICreateUserDto } from '../../dtos/ICreateUserDTO';
 
 import { User } from '../../entities/User';

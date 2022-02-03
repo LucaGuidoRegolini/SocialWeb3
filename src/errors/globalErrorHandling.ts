@@ -42,6 +42,10 @@ export function globalErrorHandling(
     let messageString;
     const { type, context } = err.details.values().next().value.details[0];
 
+    console.log(type);
+
+    console.log(context);
+
     switch (type) {
       case 'any.required':
         messageString = `O campo ${context.label} é obrigatório.`;
@@ -87,6 +91,9 @@ export function globalErrorHandling(
         break;
       case 'object.unknown':
         messageString = `${context.label} não é um campo válido.`;
+        break;
+      case 'string.guid':
+        messageString = `O campo ${context.label} deve ser um UUID válido.`;
         break;
       default:
         messageString = `Aconteceu um erro tente novamente mais tarde. `;

@@ -1,6 +1,6 @@
 import { IFilterReq } from '../../../../shared/interfaces/IFilterReq';
 import { IPaginatedRequest } from '../../../../shared/interfaces/IPaginatedRequest';
-import IPaginatedResponse from '../../../../shared/interfaces/IPaginatedResponse';
+import { IPaginatedResponse } from '../../../../shared/interfaces/IPaginatedResponse';
 import { ICreateSubDto } from '../../dtos/ICreateSubDTO';
 
 import { Subscription } from '../../entities/Subscription';
@@ -12,4 +12,5 @@ export interface ISubscriptionRepository {
   ): Promise<IPaginatedResponse<Subscription>>;
   create(sub: ICreateSubDto): Promise<Subscription>;
   save(sub: Subscription): Promise<Subscription>;
+  delete(sub: Subscription): Promise<void>;
 }

@@ -5,4 +5,4 @@ interface IPaginatedResponse<T> {
   limit: number;
 }
 
-export default IPaginatedResponse;
+export { IPaginatedResponse };

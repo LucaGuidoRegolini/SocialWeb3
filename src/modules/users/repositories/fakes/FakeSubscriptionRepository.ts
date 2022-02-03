@@ -2,7 +2,7 @@ import { ISubscriptionRepository } from '../interfaces/ISubscriptionRepository';
 
 import { IFilterReq } from '../../../../shared/interfaces/IFilterReq';
 import { IPaginatedRequest } from '../../../../shared/interfaces/IPaginatedRequest';
-import IPaginatedResponse from '../../../../shared/interfaces/IPaginatedResponse';
+import { IPaginatedResponse } from '../../../../shared/interfaces/IPaginatedResponse';
 
 import { Subscription } from '../../entities/Subscription';
 import { ICreateSubDto } from '../../dtos/ICreateSubDTO';
@@ -54,9 +54,9 @@ class FakeSubscriptionRepository implements ISubscriptionRepository {
     return sub;
   }
 
-  public async delete(sub: Subscription): Promise<Subscription> {
+  public async delete(sub: Subscription): Promise<void> {
     this.subs.splice(this.subs.indexOf(sub), 1);
-    return sub;
+    return;
   }
 }
 
