@@ -58,12 +58,14 @@ export class SubscriptionController {
   }
 
   public async remove(request: Request, response: Response): Promise<Response> {
+    const { uuid: userUuid } = request.user;
     const { uuid } = request.params;
 
     const removeSubcription = container.resolve(RemoveSubcriptionService);
 
     const session = await removeSubcription.execute({
       uuid,
+      userUuid,
     });
 
     return response.json(session);
