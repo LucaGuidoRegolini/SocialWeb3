@@ -17,7 +17,7 @@ interface IRequest {
 @injectable()
 class ShowFollowingService {
   constructor(
-    @inject('UsersRepository')
+    @inject('UserRepository')
     private usersRepository: IUserRepository,
 
     @inject('SubscriptionRepository')

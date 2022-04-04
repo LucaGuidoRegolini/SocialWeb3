@@ -11,8 +11,11 @@ import {
 } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
 
+import { reactionEnum } from 'enum/reactionEnum';
+
 import { User } from '@modules/users/entities/User';
 import { Media } from './Media';
+import { Reaction } from './Reaction';
 
 @Entity('posts')
 class Post {
@@ -35,10 +38,21 @@ class Post {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @OneToMany(() => Media, media => media.post)
+  @OneToMany(() => Media, media => media.post, { eager: true })
   media: Media[];
 
-  @OneToMany(() => Post, post => post.id)
+  @OneToMany(() => Reaction, reaction => reaction.post)
+  reaction: Reaction[];
+
+  @Exclude()
+  @Column({ nullable: true })
+  coment_id: number;
+
+  @ManyToOne(() => Post, post => post.comments)
+  @JoinColumn({ name: 'coment_id' })
+  comment: Post;
+
+  @OneToMany(() => Post, post => post.comment)
   comments: Post[];
 
   @UpdateDateColumn()
@@ -46,6 +60,36 @@ class Post {
 
   @CreateDateColumn()
   created_at!: Date;
+
+  @Expose({ name: 'reactions_num' })
+  getReactionsCount() {
+    const object = {
+      like: 0,
+      dislike: 0,
+      love: 0,
+      haha: 0,
+      wow: 0,
+      sad: 0,
+      angry: 0,
+    };
+
+    if (this.reaction) {
+      this.reaction.forEach(reaction => {
+        object[reaction.reaction] = object[reaction.reaction] + 1;
+      });
+    }
+
+    return object;
+  }
+
+  @Expose({ name: 'comments_num' })
+  getCommentsCount() {
+    if (this.comments) {
+      return this.comments.length;
+    }
+
+    return 0;
+  }
 }
 
 export { Post };

@@ -13,7 +13,7 @@ interface IRequest {
 @injectable()
 class RemoveSubcriptionService {
   constructor(
-    @inject('UsersRepository')
+    @inject('UserRepository')
     private usersRepository: IUserRepository,
 
     @inject('SubscriptionRepository')

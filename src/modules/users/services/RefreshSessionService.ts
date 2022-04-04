@@ -20,7 +20,7 @@ const { jwt, refreshToken: refreshTokenOptions } = authConfig;
 @injectable()
 class RefreshSessionService {
   constructor(
-    @inject('UsersRepository')
+    @inject('UserRepository')
     private usersRepository: IUserRepository,
 
     @inject('RedisProvider')

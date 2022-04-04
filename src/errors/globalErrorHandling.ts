@@ -42,10 +42,6 @@ export function globalErrorHandling(
     let messageString;
     const { type, context } = err.details.values().next().value.details[0];
 
-    console.log(type);
-
-    console.log(context);
-
     switch (type) {
       case 'any.required':
         messageString = `O campo ${context.label} é obrigatório.`;
@@ -115,6 +111,8 @@ export function globalErrorHandling(
       request.user,
     )} - date: ${new Date()}`,
   );
+
+  console.error(err);
 
   return response.status(500).json({
     status: 'error',

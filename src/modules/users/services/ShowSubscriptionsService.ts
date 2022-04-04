@@ -17,7 +17,7 @@ interface IRequest {
 @injectable()
 class ShowSubscriptionsService {
   constructor(
-    @inject('UsersRepository')
+    @inject('UserRepository')
     private usersRepository: IUserRepository,
 
     @inject('SubscriptionRepository')

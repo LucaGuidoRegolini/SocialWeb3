@@ -26,7 +26,7 @@ class Media {
   name: string;
 
   @Column()
-  hash: string;
+  path: string;
 
   @Column()
   post_id: number;
@@ -40,7 +40,7 @@ class Media {
 
   @Expose({ name: 'media_url' })
   getAvatarUrl() {
-    if (this.hash) return `${process.env.API_URL}/files/${this.hash}`;
+    if (this.path) return `${process.env.API_URL}/files/${this.path}`;
     return `${process.env.API_URL}/files/default-avatar.png`;
   }
 }
